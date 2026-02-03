@@ -6,24 +6,32 @@
   "scripts": {
     "dev": "bun --hot src/index.ts",
     "build": "bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*'",
-    "start": "NODE_ENV=production bun src/index.ts"
+    "start": "NODE_ENV=production bun src/index.ts",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write ."
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.2.3",
+    "@mui/material": "^6.2.3",
+    "@tanstack/react-query": "^5.57.0",
+    "axios": "^1.7.7",
     "react": "^19",
     "react-dom": "^19",
     "react-router-dom": "^6.28.0",
-    "@mui/material": "^6.2.3",
-    "@mui/icons-material": "^6.2.3",
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "zustand": "^4.5.5",
-    "axios": "^1.7.7",
-    "@tanstack/react-query": "^5.57.0",
-    "tailwindcss": "^3.4.14"
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "eslint": "^9.17.0",
+    "@eslint/js": "^9.17.0",
+    "typescript-eslint": "^8.17.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2"
   }
 }

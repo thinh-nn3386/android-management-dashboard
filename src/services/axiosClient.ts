@@ -1,7 +1,10 @@
 import axios from 'axios';
 import type { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8088';
+const env = (import.meta as { env?: Record<string, string> }).env;
+const API_BASE_URL =
+  env?.API_BASE_URL || 
+  'http://localhost:8088';
 
 // Create axios instance
 const axiosClient: AxiosInstance = axios.create({
