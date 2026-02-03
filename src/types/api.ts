@@ -34,24 +34,22 @@ export interface EnterpriseLoginResponse {
   message: string;
   email: string;
   enterprise?: EnterpriseInfo;
-  signup_url?: string;
 }
 
-export interface EmailEnterpriseMapping {
-  email: string;
-  enterprise_name: string;
-}
-
-export interface MappingsResponse {
+export interface EnterpriseSignUpUrlPayload {
   status: string;
+  enterprise_found: boolean;
   message: string;
-  mappings: EmailEnterpriseMapping[];
-  count: number;
+  email: string;
+  enterprise?: EnterpriseInfo;
 }
 
-export interface MapEmailPayload {
+export interface EnterpriseSignUpUrlResponse {
+  status: string;
+  enterprise_found: boolean;
+  message: string;
   email: string;
-  enterprise_name: string;
+  enterprise?: EnterpriseInfo;
 }
 
 export interface EnterpriseRegisterPayload {
@@ -66,19 +64,6 @@ export interface EnterpriseRegisterResponse {
   email: string;
   enterprise_name: string;
   enterprise: EnterpriseInfo;
-}
-
-// Auth Status Types
-export interface AuthStatusResponse {
-  status: string;
-  authenticated: boolean;
-  message: string;
-  service_account_email?: string;
-  project_id?: string;
-  details?: {
-    scopes: string[];
-  };
-  error_type?: string;
 }
 
 // Policy Types
@@ -202,15 +187,4 @@ export interface ApiResponse<T> {
   status: string;
   message: string;
   data?: T;
-}
-
-export interface HealthCheckResponse {
-  status: string;
-  message: string;
-}
-
-export interface ApiStatusResponse {
-  status: string;
-  message?: string;
-  [key: string]: any;
 }

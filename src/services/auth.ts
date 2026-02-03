@@ -1,27 +1,8 @@
 import axiosClient from './axiosClient';
-import type {
-  AuthCredentials,
-  AuthResponse,
-  RegisterResponse,
-  AuthStatusResponse,
-  HealthCheckResponse,
-  ApiStatusResponse,
-} from '@/types/api';
+import type { AuthCredentials, AuthResponse, RegisterResponse } from '@/types/api';
 
 // Public endpoints
 export const authService = {
-  // Health check
-  healthCheck: async (): Promise<HealthCheckResponse> => {
-    const response = await axiosClient.get('/health');
-    return response.data;
-  },
-
-  // API status
-  apiStatus: async (): Promise<ApiStatusResponse> => {
-    const response = await axiosClient.get('/api/v1/status');
-    return response.data;
-  },
-
   // Register new user
   register: async (credentials: AuthCredentials): Promise<RegisterResponse> => {
     const response = await axiosClient.post('/api/v1/register', credentials);
@@ -46,27 +27,6 @@ export const authService = {
   logout: (): void => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userEmail');
-  },
-
-  // Check auth status
-  checkAuthStatus: async (): Promise<AuthStatusResponse> => {
-    const response = await axiosClient.get('/api/v1/auth/status');
-    return response.data;
-  },
-
-  // Get stored auth token
-  getAuthToken: (): string | null => {
-    return localStorage.getItem('authToken');
-  },
-
-  // Get stored user email
-  getUserEmail: (): string | null => {
-    return localStorage.getItem('userEmail');
-  },
-
-  // Check if user is authenticated
-  isAuthenticated: (): boolean => {
-    return !!localStorage.getItem('authToken');
   },
 };
 
