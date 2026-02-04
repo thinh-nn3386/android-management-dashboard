@@ -1,23 +1,21 @@
 import axiosClient from './axiosClient';
 import type {
-  EnterpriseLoginPayload,
   EnterpriseLoginResponse,
   EnterpriseRegisterPayload,
   EnterpriseRegisterResponse,
-  EnterpriseSignUpUrlPayload,
   EnterpriseSignUpUrlResponse,
 } from '@/types/api';
 
 export const enterpriseService = {
   // Check enterprise registration
-  login: async (payload: EnterpriseLoginPayload): Promise<EnterpriseLoginResponse> => {
-    const response = await axiosClient.post('/api/v1/enterprise/login', payload);
+  login: async (): Promise<EnterpriseLoginResponse> => {
+    const response = await axiosClient.post('/api/v1/enterprise/login');
     return response.data;
   },
 
-  createSignupUrl: async (
-    payload: EnterpriseSignUpUrlPayload,
-  ): Promise<EnterpriseSignUpUrlResponse> => {
+  createSignupUrl: async (payload: {
+    callback_url: string;
+  }): Promise<EnterpriseSignUpUrlResponse> => {
     const response = await axiosClient.post('/api/v1/enterprise/signup-url', payload);
     return response.data;
   },

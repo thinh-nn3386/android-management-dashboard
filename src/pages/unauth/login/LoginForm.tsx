@@ -6,22 +6,19 @@ import { Link } from 'react-router-dom';
 import { validateEmail } from '@/utils/utils';
 
 export type LoginFormProps = {
-  onSuccess?: (email: string) => void;
-  onNavigateSignup?: () => void;
+  onNavigateSignup: () => void;
 };
 
-export function LoginForm({ onSuccess, onNavigateSignup }: LoginFormProps) {
+export function LoginForm({ onNavigateSignup }: LoginFormProps) {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string | null>(null);
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
-    setSuccess(null);
 
     if (!validateEmail(email)) {
       setEmailError('Please enter a valid email address.');
@@ -29,11 +26,8 @@ export function LoginForm({ onSuccess, onNavigateSignup }: LoginFormProps) {
     }
 
     setLoading(true);
-
     try {
-      const result = await authService.login({ email, password });
-      setSuccess(`Welcome ${result.email}`);
-      onSuccess?.(result.email);
+      await authService.login({ email, password });
     } catch (err) {
       const apiError = normalizeAxiosError(err);
       setError(apiError.message);
@@ -42,8 +36,17 @@ export function LoginForm({ onSuccess, onNavigateSignup }: LoginFormProps) {
     }
   };
 
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    if (emailError) {
+      setEmailError(validateEmail(value) ? null : 'Please enter a valid email address.');
+    }
+  };
+
   return (
     <Paper
+      className="login-form"
       elevation={0}
       sx={{
         width: '100%',
@@ -67,19 +70,12 @@ export function LoginForm({ onSuccess, onNavigateSignup }: LoginFormProps) {
         </Box>
 
         {error && <Alert severity="error">{error}</Alert>}
-        {success && <Alert severity="success">{success}</Alert>}
 
         <TextField
           label="Email"
           type="email"
           value={email}
-          onChange={(e) => {
-            const value = e.target.value;
-            setEmail(value);
-            if (emailError) {
-              setEmailError(validateEmail(value) ? null : 'Please enter a valid email address.');
-            }
-          }}
+          onChange={onChangeEmail}
           onBlur={() => {
             setEmailError(validateEmail(email) ? null : 'Please enter a valid email address.');
           }}
@@ -112,10 +108,8 @@ export function LoginForm({ onSuccess, onNavigateSignup }: LoginFormProps) {
           to="/signup"
           style={{ textDecoration: 'none', color: 'primary' }}
           onClick={(event) => {
-            if (onNavigateSignup) {
-              event.preventDefault();
-              onNavigateSignup();
-            }
+            event.preventDefault();
+            onNavigateSignup();
           }}
         >
           Create an account

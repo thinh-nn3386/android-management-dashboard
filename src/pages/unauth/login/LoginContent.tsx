@@ -1,12 +1,8 @@
 import { Box, Chip, Stack, Typography } from '@mui/material';
 
-export type LoginContentProps = {
-  className?: string;
-};
-
-export function LoginContent({ className }: LoginContentProps) {
+export function LoginContent() {
   return (
-    <Box className={className} sx={{ color: 'white' }}>
+    <Box className="login-content" sx={{ color: 'white' }}>
       <Chip
         label="Enterprise"
         color="primary"

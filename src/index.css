@@ -1,5 +1,11 @@
 :root {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
   line-height: 1.5;
   color: #0f172a;
   background-color: #f8fafc;
@@ -9,7 +15,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
@@ -24,73 +31,4 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-@keyframes loginContentIn {
-  from {
-    opacity: 0;
-    transform: translateX(36px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes loginContentOut {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(36px);
-  }
-}
-
-@keyframes loginFormIn {
-  from {
-    opacity: 0;
-    transform: translateX(-36px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes loginFormOut {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(-36px);
-  }
-}
-
-.login-page .login-content {
-  animation: loginContentIn 420ms ease-out both;
-}
-
-.login-page.exiting .login-content {
-  animation: loginContentOut 280ms ease-in both;
-}
-
-.login-page .login-form {
-  animation: loginFormIn 420ms ease-out both;
-}
-
-.login-page.exiting .login-form {
-  animation: loginFormOut 280ms ease-in both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .login-page .login-content,
-  .login-page.exiting .login-content,
-  .login-page .login-form,
-  .login-page.exiting .login-form {
-    animation: none;
-  }
 }

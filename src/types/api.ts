@@ -17,11 +17,6 @@ export interface RegisterResponse {
   email: string;
 }
 
-// Enterprise Types
-export interface EnterpriseLoginPayload {
-  callback_url: string;
-}
-
 export interface EnterpriseInfo {
   name: string;
   display_name: string;
@@ -36,20 +31,11 @@ export interface EnterpriseLoginResponse {
   enterprise?: EnterpriseInfo;
 }
 
-export interface EnterpriseSignUpUrlPayload {
-  status: string;
-  enterprise_found: boolean;
-  message: string;
-  email: string;
-  enterprise?: EnterpriseInfo;
-}
-
 export interface EnterpriseSignUpUrlResponse {
   status: string;
-  enterprise_found: boolean;
   message: string;
-  email: string;
-  enterprise?: EnterpriseInfo;
+  signup_url: string;
+  signup_name: string;
 }
 
 export interface EnterpriseRegisterPayload {
