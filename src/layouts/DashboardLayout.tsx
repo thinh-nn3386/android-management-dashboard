@@ -9,14 +9,16 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-import { Android, Logout, Person, Science } from '@mui/icons-material';
+import { Android, Logout, Assignment, Devices } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { useEnterpriseStore } from '@/stores/enterpriseStore';
 
 const DRAWER_WIDTH = 280;
 
 export default function DashboardLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const enterprise = useEnterpriseStore((state) => state.enterprise);
 
   // Get user email from localStorage or auth service
   const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
@@ -27,24 +29,25 @@ export default function DashboardLayout() {
     navigate('/login');
   };
 
-  const menuItems = [
+  const mainItem = {
+    path: '/home',
+    label: 'Android Devices Management',
+    icon: <Android />,
+    color: '#4caf50',
+  };
+
+  const subItems = [
     {
-      path: '/home',
-      label: 'Android Devices Management',
-      icon: <Android />,
-      color: '#4caf50',
+      path: '/home/policies',
+      label: 'Policies',
+      icon: <Assignment />,
+      color: '#3f51b5',
     },
     {
-      path: '/home/profile',
-      label: 'User Profile',
-      icon: <Person />,
-      color: '#2196f3',
-    },
-    {
-      path: '/home/test',
-      label: 'Test Tab',
-      icon: <Science />,
-      color: '#ff9800',
+      path: '/home/devices',
+      label: 'Manage Devices',
+      icon: <Devices />,
+      color: '#009688',
     },
   ];
 
@@ -83,19 +86,19 @@ export default function DashboardLayout() {
 
         {/* Navigation Tabs */}
         <List sx={{ flexGrow: 1, px: 1, py: 2 }}>
-          {menuItems.map((item) => {
-            const isSelected = location.pathname === item.path;
+          {(() => {
+            const isSelected = location.pathname.startsWith('/home');
             return (
-              <ListItem key={item.path} disablePadding sx={{ mb: 0.5 }}>
+              <ListItem disablePadding sx={{ mb: 0.5 }}>
                 <ListItemButton
                   selected={isSelected}
-                  onClick={() => navigate(item.path)}
+                  onClick={() => navigate(mainItem.path)}
                   sx={{
                     borderRadius: '8px',
                     '&.Mui-selected': {
-                      backgroundColor: `${item.color}26`,
+                      backgroundColor: `${mainItem.color}26`,
                       '&:hover': {
-                        backgroundColor: `${item.color}3d`,
+                        backgroundColor: `${mainItem.color}3d`,
                       },
                     },
                     '&:hover': {
@@ -103,9 +106,11 @@ export default function DashboardLayout() {
                     },
                   }}
                 >
-                  <ListItemIcon sx={{ minWidth: 40, color: item.color }}>{item.icon}</ListItemIcon>
+                  <ListItemIcon sx={{ minWidth: 40, color: mainItem.color }}>
+                    {mainItem.icon}
+                  </ListItemIcon>
                   <ListItemText
-                    primary={item.label}
+                    primary={mainItem.label}
                     primaryTypographyProps={{
                       fontSize: '0.8125rem',
                       fontWeight: isSelected ? 600 : 400,
@@ -114,7 +119,46 @@ export default function DashboardLayout() {
                 </ListItemButton>
               </ListItem>
             );
-          })}
+          })()}
+
+          {enterprise && (
+            <Box sx={{ pl: 2.5, pt: 0.5 }}>
+              {subItems.map((item) => {
+                const isSelected = location.pathname === item.path;
+                return (
+                  <ListItem key={item.path} disablePadding sx={{ mb: 0.5 }}>
+                    <ListItemButton
+                      selected={isSelected}
+                      onClick={() => navigate(item.path)}
+                      sx={{
+                        borderRadius: '8px',
+                        '&.Mui-selected': {
+                          backgroundColor: `${item.color}26`,
+                          '&:hover': {
+                            backgroundColor: `${item.color}3d`,
+                          },
+                        },
+                        '&:hover': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                        },
+                      }}
+                    >
+                      <ListItemIcon sx={{ minWidth: 36, color: item.color }}>
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={item.label}
+                        primaryTypographyProps={{
+                          fontSize: '0.75rem',
+                          fontWeight: isSelected ? 600 : 400,
+                        }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                );
+              })}
+            </Box>
+          )}
         </List>
 
         <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.12)' }} />

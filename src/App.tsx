@@ -5,8 +5,8 @@ import LoginPage from './pages/unauth/login/LoginPage';
 import SignupPage from './pages/unauth/signup/SignupPage';
 import DashboardLayout from './layouts/DashboardLayout';
 import AndroidDevicesPage from './pages/auth/androidDevices/AndroidDevicesPage';
-import UserProfilePage from './pages/auth/userProfile/UserProfilePage';
-import TestTabPage from './pages/auth/test/TestTabPage';
+import PoliciesPage from './pages/auth/policies/PoliciesPage';
+import DevicesPage from './pages/auth/devices/DevicesPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const queryClient = new QueryClient({
@@ -35,8 +35,8 @@ export function App() {
             }
           >
             <Route index element={<AndroidDevicesPage />} />
-            <Route path="profile" element={<UserProfilePage />} />
-            <Route path="test" element={<TestTabPage />} />
+            <Route path="policies" element={<PoliciesPage />} />
+            <Route path="devices" element={<DevicesPage />} />
           </Route>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="*" element={<Navigate to="/home" replace />} />

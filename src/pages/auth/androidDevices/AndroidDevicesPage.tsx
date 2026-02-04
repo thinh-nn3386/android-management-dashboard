@@ -1,9 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Box, CircularProgress, Alert, Button } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { useQuery } from '@tanstack/react-query';
 import { enterpriseService } from '@/services/enterprise';
-import EnterpriseCard from './components/EnterpriseCard';
+import { useEnterpriseStore } from '@/stores/enterpriseStore';
+import EnterpriseDashboard from './components/EnterpriseDashboard';
 import CreateEnterpriseCard from './components/CreateEnterpriseCard';
 
 export default function AndroidDevicesPage() {
@@ -19,6 +20,9 @@ export default function AndroidDevicesPage() {
     queryFn: () => enterpriseService.login(),
   });
 
+  const setEnterprise = useEnterpriseStore((state) => state.setEnterprise);
+  const clearEnterprise = useEnterpriseStore((state) => state.clearEnterprise);
+
   const handleTryAgain = useCallback(() => {
     setIsRefreshing(true);
     setTimeout(() => {
@@ -30,6 +34,16 @@ export default function AndroidDevicesPage() {
   const handleEnterpriseCreated = useCallback(() => {
     refetch();
   }, [refetch]);
+
+  const enterpriseFound = response?.enterprise_found && response?.enterprise;
+
+  useEffect(() => {
+    if (enterpriseFound && response?.enterprise) {
+      setEnterprise(response.enterprise);
+    } else {
+      clearEnterprise();
+    }
+  }, [enterpriseFound, response, setEnterprise, clearEnterprise]);
 
   if (isLoading || isRefreshing) {
     return (
@@ -61,12 +75,10 @@ export default function AndroidDevicesPage() {
     );
   }
 
-  const enterpriseFound = response?.enterprise_found && response?.enterprise;
-
   return (
-    <Box sx={{ maxWidth: 600 }}>
+    <Box sx={{ maxWidth: 900 }}>
       {enterpriseFound ? (
-        <EnterpriseCard enterprise={response.enterprise!} />
+        <EnterpriseDashboard enterprise={response.enterprise!} />
       ) : (
         <CreateEnterpriseCard onEnterpriseCreated={handleEnterpriseCreated} />
       )}
