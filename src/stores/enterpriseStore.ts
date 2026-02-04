@@ -7,6 +7,7 @@ interface EnterpriseState {
 
   // Policies under this enterprise
   policies: Policy[];
+  policiesFetched: boolean;
 
   // Devices under this enterprise
   devices: Device[];
@@ -31,6 +32,7 @@ export const useEnterpriseStore = create<EnterpriseState>((set) => ({
   // Initial state
   enterprise: null,
   policies: [],
+  policiesFetched: false,
   devices: [],
 
   // Enterprise actions
@@ -38,8 +40,8 @@ export const useEnterpriseStore = create<EnterpriseState>((set) => ({
   clearEnterprise: () => set({ enterprise: null }),
 
   // Policies actions
-  setPolicies: (policies) => set({ policies }),
-  clearPolicies: () => set({ policies: [] }),
+  setPolicies: (policies) => set({ policies, policiesFetched: true }),
+  clearPolicies: () => set({ policies: [], policiesFetched: false }),
 
   // Devices actions
   setDevices: (devices) => set({ devices }),
@@ -50,6 +52,7 @@ export const useEnterpriseStore = create<EnterpriseState>((set) => ({
     set({
       enterprise: null,
       policies: [],
+      policiesFetched: false,
       devices: [],
     }),
 }));

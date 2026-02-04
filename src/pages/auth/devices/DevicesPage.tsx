@@ -1,16 +1,34 @@
-import { useEffect } from 'react';
-import { Box, Typography, CircularProgress, Alert, Button, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Alert,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+} from '@mui/material';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import QrCodeIcon from '@mui/icons-material/QrCode';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { deviceService } from '@/services/device';
 import { useEnterpriseStore } from '@/stores/enterpriseStore';
 import { useDevicesUpdater } from '@/hooks/useStoreUpdaters';
+import ProvisionDeviceModal from './components/ProvisionDeviceModal';
 
 export default function DevicesPage() {
   const enterprise = useEnterpriseStore((state) => state.enterprise);
   const devices = useEnterpriseStore((state) => state.devices);
   const { replaceAll: replaceDevices, deleteDevice } = useDevicesUpdater();
+  const [isProvisionModalOpen, setIsProvisionModalOpen] = useState(false);
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['devices', enterprise?.name],
     queryFn: () => (enterprise ? deviceService.listDevices(enterprise.name) : null),
     enabled: !!enterprise,
@@ -33,10 +51,21 @@ export default function DevicesPage() {
       });
     },
     onSuccess: (_, deviceId) => {
-      // Update store immediately - no list refetch needed
       deleteDevice(deviceId);
     },
   });
+
+  const handleProvisionComplete = () => {
+    // Refetch devices list after provisioning
+    refetch();
+  };
+
+  const handleDelete = (e: React.MouseEvent, deviceId: string) => {
+    e.stopPropagation();
+    if (confirm('Are you sure you want to delete this device?')) {
+      deleteMutation.mutate(deviceId);
+    }
+  };
 
   if (!enterprise) {
     return (
@@ -66,24 +95,58 @@ export default function DevicesPage() {
 
   return (
     <Box>
-      <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
-        Manage Devices ({devices.length})
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h5" sx={{ fontWeight: 600 }}>
+          Manage Devices ({devices.length})
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<QrCodeIcon />}
+          onClick={() => setIsProvisionModalOpen(true)}
+        >
+          Provision Device
+        </Button>
+      </Box>
+
       {devices.length === 0 ? (
         <Alert severity="info">No devices found. Create an enrollment token.</Alert>
       ) : (
-        <Stack spacing={2}>
-          <pre>{JSON.stringify(devices, null, 2)}</pre>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => devices[0] && deleteMutation.mutate(devices[0].device_id)}
-            disabled={deleteMutation.isPending}
-          >
-            {deleteMutation.isPending ? 'Deleting...' : 'Delete First Device (Example)'}
-          </Button>
-        </Stack>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 600 }}>Device Name</TableCell>
+                <TableCell sx={{ fontWeight: 600 }} align="right">
+                  Actions
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {devices.map((device) => (
+                <TableRow key={device.device_id} hover>
+                  <TableCell>{device.name || device.device_id}</TableCell>
+                  <TableCell align="right">
+                    <IconButton
+                      size="small"
+                      onClick={(e) => handleDelete(e, device.device_id)}
+                      color="error"
+                      disabled={deleteMutation.isPending}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
+
+      <ProvisionDeviceModal
+        open={isProvisionModalOpen}
+        onClose={() => setIsProvisionModalOpen(false)}
+        onComplete={handleProvisionComplete}
+      />
     </Box>
   );
 }
