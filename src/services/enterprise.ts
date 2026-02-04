@@ -18,7 +18,7 @@ export const enterpriseService = {
   createSignupUrl: async (
     payload: EnterpriseSignUpUrlPayload,
   ): Promise<EnterpriseSignUpUrlResponse> => {
-    const response = await axiosClient.post('/api/v1/enterprise/login', payload);
+    const response = await axiosClient.post('/api/v1/enterprise/signup-url', payload);
     return response.data;
   },
 
