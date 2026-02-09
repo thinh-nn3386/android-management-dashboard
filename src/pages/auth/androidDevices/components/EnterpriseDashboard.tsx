@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Typography, Button, Stack } from '@mui/material';
-import { Assignment, Devices } from '@mui/icons-material';
+import { Assignment, Devices, Apps } from '@mui/icons-material';
 import type { EnterpriseInfo } from '@/types/api';
 import { useNavigate } from 'react-router-dom';
 
@@ -46,6 +46,34 @@ export default function EnterpriseDashboard({ enterprise }: EnterpriseDashboardP
       </Card>
 
       <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+        <Card
+          sx={{
+            backgroundColor: '#fff',
+            boxShadow: 2,
+            borderRadius: 2,
+            flex: 1,
+          }}
+        >
+          <CardContent>
+            <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1.5 }}>
+              <Apps sx={{ color: '#ff9800' }} />
+              <Typography variant="h6" sx={{ fontWeight: 600, color: '#1a1a2e' }}>
+                Play Store
+              </Typography>
+            </Stack>
+            <Typography variant="body2" sx={{ color: '#666', mb: 2 }}>
+              Browse and manage Google Play apps for your managed devices.
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: '#ff9800' }}
+              onClick={() => navigate('/home/playstore')}
+            >
+              Open Play Store
+            </Button>
+          </CardContent>
+        </Card>
+
         <Card
           sx={{
             backgroundColor: '#fff',

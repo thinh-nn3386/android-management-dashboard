@@ -7,6 +7,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import AndroidDevicesPage from './pages/auth/androidDevices/AndroidDevicesPage';
 import PoliciesPage from './pages/auth/policies/PoliciesPage';
 import DevicesPage from './pages/auth/devices/DevicesPage';
+import PlayStorePage from './pages/auth/playStore/PlayStorePage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const queryClient = new QueryClient({
@@ -37,6 +38,7 @@ export function App() {
             <Route index element={<AndroidDevicesPage />} />
             <Route path="policies" element={<PoliciesPage />} />
             <Route path="devices" element={<DevicesPage />} />
+            <Route path="playstore" element={<PlayStorePage />} />
           </Route>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="*" element={<Navigate to="/home" replace />} />

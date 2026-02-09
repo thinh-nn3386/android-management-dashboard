@@ -9,7 +9,7 @@ import {
   Divider,
   Typography,
 } from '@mui/material';
-import { Android, Logout, Assignment, Devices } from '@mui/icons-material';
+import { Android, Logout, Assignment, Devices, Apps } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useEnterpriseStore } from '@/stores/enterpriseStore';
 
@@ -48,6 +48,12 @@ export default function DashboardLayout() {
       label: 'Manage Devices',
       icon: <Devices />,
       color: '#009688',
+    },
+    {
+      path: '/home/playstore',
+      label: 'Play Store',
+      icon: <Apps />,
+      color: '#ff9800',
     },
   ];
 

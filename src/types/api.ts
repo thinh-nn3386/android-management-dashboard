@@ -53,6 +53,21 @@ export interface EnterpriseRegisterResponse {
   enterprise: EnterpriseInfo;
 }
 
+export interface WebToken {
+  name: string;
+  value: string;
+}
+
+export interface EnterpriseWebTokenPayload {
+  enterprise_name: string;
+}
+
+export interface EnterpriseWebTokenResponse {
+  status: string;
+  message: string;
+  web_token: WebToken;
+}
+
 // Policy Types
 export interface Application {
   packageName: string;

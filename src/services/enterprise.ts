@@ -4,6 +4,8 @@ import type {
   EnterpriseRegisterPayload,
   EnterpriseRegisterResponse,
   EnterpriseSignUpUrlResponse,
+  EnterpriseWebTokenPayload,
+  EnterpriseWebTokenResponse,
 } from '@/types/api';
 
 export const enterpriseService = {
@@ -23,6 +25,14 @@ export const enterpriseService = {
   // Register new enterprise
   register: async (payload: EnterpriseRegisterPayload): Promise<EnterpriseRegisterResponse> => {
     const response = await axiosClient.post('/api/v1/enterprise/register', payload);
+    return response.data;
+  },
+
+  // Create web token for EMM iframe
+  createWebToken: async (
+    payload: EnterpriseWebTokenPayload,
+  ): Promise<EnterpriseWebTokenResponse> => {
+    const response = await axiosClient.post('/api/v1/enterprise/webtoken', payload);
     return response.data;
   },
 };
