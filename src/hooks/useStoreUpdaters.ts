@@ -1,5 +1,5 @@
 import { useEnterpriseStore } from '@/stores/enterpriseStore';
-import type { Policy, Device } from '@/types/api';
+import type { Device, Policy } from 'android-management/resource';
 
 /**
  * Policies store helpers for optimistic updates
@@ -10,18 +10,13 @@ export const usePoliciesUpdater = () => {
 
   return {
     addPolicy: (policy: Policy) => {
-      setPolicies([...policies, policy]);
+      setPolicies([policy, ...policies]);
     },
     updatePolicy: (updatedPolicy: Policy) => {
-      setPolicies(
-        policies.map((p) => (p.policy_id === updatedPolicy.policy_id ? updatedPolicy : p)),
-      );
+      setPolicies(policies.map((p) => (p.name === updatedPolicy.name ? updatedPolicy : p)));
     },
-    deletePolicy: (policyId: string) => {
-      setPolicies(policies.filter((p) => p.policy_id !== policyId));
-    },
-    replaceAll: (newPolicies: Policy[]) => {
-      setPolicies(newPolicies);
+    deletePolicy: (name: string) => {
+      setPolicies(policies.filter((p) => p.name !== name));
     },
   };
 };
@@ -35,16 +30,13 @@ export const useDevicesUpdater = () => {
 
   return {
     addDevice: (device: Device) => {
-      setDevices([...devices, device]);
+      setDevices([device, ...devices]);
     },
     updateDevice: (updatedDevice: Device) => {
-      setDevices(devices.map((d) => (d.device_id === updatedDevice.device_id ? updatedDevice : d)));
+      setDevices(devices.map((d) => (d.name === updatedDevice.name ? updatedDevice : d)));
     },
-    deleteDevice: (deviceId: string) => {
-      setDevices(devices.filter((d) => d.device_id !== deviceId));
-    },
-    replaceAll: (newDevices: Device[]) => {
-      setDevices(newDevices);
+    deleteDevice: (name: string) => {
+      setDevices(devices.filter((d) => d.name !== name));
     },
   };
 };

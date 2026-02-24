@@ -1,17 +1,20 @@
+import type { ApiResponseType } from './api.types';
 import axiosClient from './axiosClient';
-import type { AuthCredentials, AuthResponse, RegisterResponse } from '@/types/api';
 
 // Public endpoints
-export const authService = {
+export const authApi = {
   // Register new user
-  register: async (credentials: AuthCredentials): Promise<RegisterResponse> => {
-    const response = await axiosClient.post('/api/v1/register', credentials);
+  register: async (payload: { email: string; password: string }): Promise<ApiResponseType> => {
+    const response = await axiosClient.post('/api/v1/register', payload);
     return response.data;
   },
 
   // Login user
-  login: async (credentials: AuthCredentials): Promise<AuthResponse> => {
-    const response = await axiosClient.post('/api/v1/login', credentials);
+  login: async (payload: {
+    email: string;
+    password: string;
+  }): Promise<ApiResponseType<{ token: string; email: string }>> => {
+    const response = await axiosClient.post('/api/v1/login', payload);
     const data = response.data;
 
     // Store token and email in localStorage
@@ -29,5 +32,3 @@ export const authService = {
     localStorage.removeItem('userEmail');
   },
 };
-
-export default authService;

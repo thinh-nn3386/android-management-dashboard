@@ -7,7 +7,7 @@ import { useEnterpriseStore } from '@/stores/enterpriseStore';
 import EnterpriseDashboard from './components/EnterpriseDashboard';
 import CreateEnterpriseCard from './components/CreateEnterpriseCard';
 
-export default function AndroidDevicesPage() {
+export default function EnterprisePage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const {

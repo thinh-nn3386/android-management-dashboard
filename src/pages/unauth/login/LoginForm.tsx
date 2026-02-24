@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Box, Button, TextField, Typography, Alert, Paper } from '@mui/material';
-import { authService } from '@/services/auth';
+import { authApi } from '@/services/auth';
 import { normalizeAxiosError } from '@/services/axiosClient';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail } from '@/utils/utils';
 
 export type LoginFormProps = {
@@ -10,6 +10,8 @@ export type LoginFormProps = {
 };
 
 export function LoginForm({ onNavigateSignup }: LoginFormProps) {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string | null>(null);
   const [password, setPassword] = useState('');
@@ -27,7 +29,8 @@ export function LoginForm({ onNavigateSignup }: LoginFormProps) {
 
     setLoading(true);
     try {
-      await authService.login({ email, password });
+      await authApi.login({ email, password });
+      navigate('/home');
     } catch (err) {
       const apiError = normalizeAxiosError(err);
       setError(apiError.message);

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, Button, TextField, Typography, Alert, Paper } from '@mui/material';
-import { authService } from '@/services/auth';
+import { authApi } from '@/services/auth';
 import { normalizeAxiosError } from '@/services/axiosClient';
 import { Link } from 'react-router-dom';
 import { validateEmail } from '@/utils/utils';
@@ -12,7 +12,6 @@ export function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,8 +26,8 @@ export function SignupPage() {
     setLoading(true);
 
     try {
-      const result = await authService.register({ email, password });
-      setSuccess(result.message || 'Account created. Please log in.');
+      await authApi.register({ email, password });
+      setSuccess('Account created. Please log in.');
     } catch (err) {
       const apiError = normalizeAxiosError(err);
       setError(apiError.message);
@@ -61,7 +60,13 @@ export function SignupPage() {
           animation: 'loginFormIn 420ms ease-out both',
         }}
       >
-        <Box component="form" onSubmit={handleSubmit} display="flex" flexDirection="column" gap={2.5}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          display="flex"
+          flexDirection="column"
+          gap={2.5}
+        >
           <Box sx={{ animation: 'loginContentIn 420ms ease-out both' }}>
             <Typography variant="h5" fontWeight={600}>
               Create your admin account

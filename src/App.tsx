@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import LoginPage from './pages/unauth/login/LoginPage';
 import SignupPage from './pages/unauth/signup/SignupPage';
 import DashboardLayout from './layouts/DashboardLayout';
-import AndroidDevicesPage from './pages/auth/androidDevices/AndroidDevicesPage';
+import EnterprisePage from './pages/auth/enterprise/EnterprisePage';
 import PoliciesPage from './pages/auth/policies/PoliciesPage';
 import DevicesPage from './pages/auth/devices/DevicesPage';
 import PlayStorePage from './pages/auth/playStore/PlayStorePage';
@@ -35,7 +35,7 @@ export function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<AndroidDevicesPage />} />
+            <Route index element={<EnterprisePage />} />
             <Route path="policies" element={<PoliciesPage />} />
             <Route path="devices" element={<DevicesPage />} />
             <Route path="playstore" element={<PlayStorePage />} />

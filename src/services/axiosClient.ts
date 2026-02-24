@@ -2,9 +2,7 @@ import axios from 'axios';
 import type { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 const env = (import.meta as { env?: Record<string, string> }).env;
-const API_BASE_URL =
-  env?.API_BASE_URL || 
-  'http://localhost:8088';
+const API_BASE_URL = env?.API_BASE_URL || 'http://localhost:8088';
 
 // Create axios instance
 const axiosClient: AxiosInstance = axios.create({
@@ -25,7 +23,7 @@ axiosClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 export type ApiError = {
@@ -38,12 +36,10 @@ export type ApiError = {
 export const normalizeAxiosError = (error: unknown): ApiError => {
   if (axios.isAxiosError(error)) {
     const status = error.response?.status;
-    const data = error.response?.data as { message?: string; error?: string; [key: string]: unknown } | undefined;
-    const message =
-      data?.message ||
-      data?.error ||
-      error.message ||
-      'Request failed';
+    const data = error.response?.data as
+      | { message?: string; error?: string; [key: string]: unknown }
+      | undefined;
+    const message = data?.message || data?.error || error.message || 'Request failed';
 
     return {
       status,
@@ -74,7 +70,7 @@ axiosClient.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosClient;

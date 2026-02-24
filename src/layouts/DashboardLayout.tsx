@@ -12,6 +12,7 @@ import {
 import { Android, Logout, Assignment, Devices, Apps } from '@mui/icons-material';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useEnterpriseStore } from '@/stores/enterpriseStore';
+import { authApi } from '@/services';
 
 const DRAWER_WIDTH = 280;
 
@@ -24,8 +25,7 @@ export default function DashboardLayout() {
   const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userEmail');
+    authApi.logout();
     navigate('/login');
   };
 
